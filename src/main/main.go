@@ -1,7 +1,11 @@
 package main
 
-import "channel"
+import (
+	"channel"
+	"list"
+)
 
 func main() {
 	channel.PrintTest()
+	list.IteratorTest()
 }
