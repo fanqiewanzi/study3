@@ -5,13 +5,6 @@ import (
 	"fmt"
 )
 
-/*
-从链表左边取出一个节点:首节点指针右移一位，首节点为nil,长度减一；
-给链表末尾新增一个节点:以传入的数据new一个节点，
-  1，链表为空时，该node作为链表的首节点、尾节点；
-  2，不为空时，该节点赋值到旧的末节点的next，该节点的前置指针为旧的末节点，该节点赋值为链表的末节点，该节点的next为nil，链表长度+1；
-反转链表：思路较多，此处随便写写，详见https://lan6193.blog.csdn.net/article/details/104660223
-*/
 type Node struct {
 	pre  *Node
 	next *Node

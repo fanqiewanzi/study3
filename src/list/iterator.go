@@ -4,6 +4,8 @@ package list
 type Iterator interface {
 	HashNext() bool
 	Next() (interface{}, error)
+	HasPrevious() bool
+	Previous() (interface{}, error)
 }
 
 //构造函数
