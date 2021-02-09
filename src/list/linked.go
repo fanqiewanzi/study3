@@ -9,14 +9,16 @@ const defaultCount = 0
 
 //单向链表数据结构
 type LinkList struct {
+	List
 	data interface{}
 	next *LinkList
 	size int
-	List
 }
 
 func NewLinkList() *LinkList {
-	return &LinkList{nil, nil, defaultCount, nil}
+	p := &LinkList{nil, nil, nil, defaultCount}
+	p.List = p
+	return p
 }
 
 func (linkList *LinkList) Add(obj ...interface{}) error {
@@ -106,19 +108,37 @@ func (linkList *LinkList) Get(location int) (interface{}, error) {
 		p = p.next
 		count++
 	}
-	return p.data, errors.New("no error")
+	return p.data, nil
 }
 
+////判断是否相等
+//func (linkList *LinkList) Equals(linkList1 *LinkList) bool {
+//	//对每个元素一一进行比较，如果循环完后两个指针都为空说明是相等的
+//	p := linkList
+//	q := linkList1
+//	for p != nil && q != nil && p.data == q.data {
+//		p = p.next
+//		q = q.next
+//	}
+//	if p == nil && q == nil {
+//		return true
+//	}
+//	return false
+//}
+
 //判断是否相等
-func (linkList *LinkList) Equals(linkList1 *LinkList) bool {
+func (linkList *LinkList) Equals(list List) bool {
 	//对每个元素一一进行比较，如果循环完后两个指针都为空说明是相等的
-	p := linkList
-	q := linkList1
-	for p != nil && q != nil && p.data == q.data {
+	p := linkList.next
+	q := list
+	var value interface{}
+	i := 1
+	for value, _ = q.Get(i); p != nil && q != nil && value == p.data; {
+		i++
+		value, _ = q.Get(i)
 		p = p.next
-		q = q.next
 	}
-	if p == nil && q == nil {
+	if p == nil && value == nil {
 		return true
 	}
 	return false

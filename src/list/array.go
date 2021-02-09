@@ -17,18 +17,21 @@ type Array struct {
 	size     int
 	capacity int
 	data     []interface{}
+	List
 }
 
 //创建一个新的动态数组
 func NewArray(capacity int) *Array {
 	data := make([]interface{}, capacity)
-	return &Array{defaultSize, capacity, data}
+	p := &Array{defaultSize, capacity, data, nil}
+	p.List = p
+	return p
 }
 
 //在不输入最大容量时创建
 func NewArrayWithoutNoCap() *Array {
 	data := make([]interface{}, defaultCapacity)
-	return &Array{defaultSize, defaultCapacity, data}
+	return &Array{defaultSize, defaultCapacity, data, nil}
 }
 
 //扩展数组
@@ -121,14 +124,28 @@ func (array *Array) Get(location int) (interface{}, error) {
 	if location <= 0 || location > array.size+1 {
 		return nil, errors.New("下标超出")
 	}
-	return array.data[location], errors.New("no error")
+	return array.data[location-1], nil
 }
 
-//判断是否相等,一个元素一个元素进行比较，其中有不同的就返回false,否则返回true,其中只有最大下标相同才会进行比较，最大下标不同直接返回false
-func (array *Array) Equals(array1 *Array) bool {
-	if array.size == array1.size {
+////判断是否相等,一个元素一个元素进行比较，其中有不同的就返回false,否则返回true,其中只有最大下标相同才会进行比较，最大下标不同直接返回false
+//func (array *Array) Equals(array1 *Array) bool {
+//	if array.size == array1.size {
+//		for i, elem := range array.data {
+//			if array1.data[i] != elem {
+//				return false
+//			}
+//		}
+//		return true
+//	}
+//	return false
+//}
+
+//判断是否相等
+func (array *Array) Equals(list List) bool {
+	if array.Size() == list.Size() {
 		for i, elem := range array.data {
-			if array1.data[i] != elem {
+			value, _ := list.Get(i + 1)
+			if value != elem {
 				return false
 			}
 		}

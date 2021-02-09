@@ -31,7 +31,7 @@ func (arrayIterator *ArraylistIterator) Next() (interface{}, error) {
 	return arrayIterator.array.data[arrayIterator.end], nil
 }
 
-func (array *Array) Iterator() Iterator {
+func (array *Array) ArrayIterator() Iterator {
 	it := new(ArraylistIterator)
 	it.array = array
 	it.cursor = 0

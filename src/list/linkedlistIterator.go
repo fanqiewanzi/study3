@@ -26,13 +26,13 @@ func (linkedlistIterator *LinkedlistIterator) Next() (interface{}, error) {
 	//下标位置往后移
 	linkedlistIterator.cursor = linkedlistIterator.cursor.next
 	linkedlistIterator.end = i
-	return linkedlistIterator.linklist.data, nil
+	return linkedlistIterator.end.data, nil
 }
 
-func (linkedList *LinkList) Iterator() Iterator {
+func (linkedList *LinkList) LinkIterator() Iterator {
 	it := new(LinkedlistIterator)
 	it.linklist = linkedList
-	it.cursor = linkedList
+	it.cursor = linkedList.next
 	it.end = linkedList
 	return it
 }

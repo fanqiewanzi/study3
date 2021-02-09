@@ -6,7 +6,8 @@ type Iterator interface {
 	Next() (interface{}, error)
 }
 
-//
+//构造函数
 type Container interface {
-	Iterator() Iterator
+	ArrayIterator() Iterator
+	LinkIterator() Iterator
 }
