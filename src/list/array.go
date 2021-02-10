@@ -17,7 +17,6 @@ type Array struct {
 	size     int
 	capacity int
 	data     []interface{}
-	List
 }
 
 //ArrayList迭代器
@@ -33,15 +32,14 @@ type ArrayIterator struct {
 //创建一个新的动态数组
 func NewArray(capacity int) *Array {
 	data := make([]interface{}, capacity)
-	p := &Array{defaultSize, capacity, data, nil}
-	p.List = p
+	p := &Array{defaultSize, capacity, data}
 	return p
 }
 
 //在不输入最大容量时创建
 func NewArrayWithoutNoCap() *Array {
 	data := make([]interface{}, defaultCapacity)
-	return &Array{defaultSize, defaultCapacity, data, nil}
+	return &Array{defaultSize, defaultCapacity, data}
 }
 
 //扩展数组
@@ -137,31 +135,25 @@ func (array *Array) Get(location int) (interface{}, error) {
 	return array.data[location-1], nil
 }
 
-////判断是否相等,一个元素一个元素进行比较，其中有不同的就返回false,否则返回true,其中只有最大下标相同才会进行比较，最大下标不同直接返回false
-//func (array *Array) Equals(array1 *Array) bool {
-//	if array.size == array1.size {
-//		for i, elem := range array.data {
-//			if array1.data[i] != elem {
-//				return false
-//			}
-//		}
-//		return true
-//	}
-//	return false
-//}
-
 //判断是否相等
 func (array *Array) Equals(list List) bool {
-	if array.Size() == list.Size() {
-		for i, elem := range array.data {
-			value, _ := list.Get(i + 1)
-			if value != elem {
-				return false
-			}
+	if array.Size() != list.Size() {
+		return false
+	}
+	it := array.Iterator()
+	it1 := list.Iterator()
+	for it.HasNext() && it1.HasNext() {
+		elem, _ := it.Next()
+		elem1, _ := it1.Next()
+		if elem != elem1 {
+			break
 		}
+	}
+	if it.HasNext() == false && it1.HasNext() == false {
 		return true
 	}
 	return false
+
 }
 
 //转换为Slice类型，data就是slice所以直接赋值过去
@@ -175,7 +167,7 @@ func (array Array) Size() int {
 }
 
 //判断是否存在下一个元素
-func (it *ArrayIterator) HashNext() bool {
+func (it *ArrayIterator) HasNext() bool {
 	//如果当前下标等于它的大小说明没有下一个元素了
 	return it.cursor != it.array.size+1
 }
@@ -195,7 +187,7 @@ func (it *ArrayIterator) Next() (interface{}, error) {
 
 //迭代器初始化
 func (array *Array) Iterator() Iterator {
-	it := new(ArraylistIterator)
+	it := new(ArrayIterator)
 	it.array = array
 	it.cursor = 0
 	it.end = -1

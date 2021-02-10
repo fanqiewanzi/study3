@@ -8,5 +8,5 @@ import (
 func main() {
 	channel.PrintTest()
 	list.IteratorTest()
-	list.Doubletest()
+	//list.Doubletest()
 }

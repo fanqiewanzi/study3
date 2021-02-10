@@ -5,17 +5,18 @@ import (
 	"fmt"
 )
 
+//节点的数据结构
 type Node struct {
 	pre  *Node
 	next *Node
 	data interface{}
 }
 
+//链表的数据结构
 type DoubleList struct {
 	first *Node
 	last  *Node
 	size  int
-	List
 }
 
 //迭代器结构
@@ -117,16 +118,19 @@ func (list *DoubleList) Get(location int) (interface{}, error) {
 //判断是否相等
 func (list *DoubleList) Equals(list1 List) bool {
 	//对每个元素一一进行比较，如果循环完后两个指针都为空说明是相等的
-	p := list.first.next
-	q := list1
-	var value interface{}
-	i := 1
-	for value, _ = q.Get(i); p != nil && q != nil && value == p.data; {
-		i++
-		value, _ = q.Get(i)
-		p = p.next
+	if list.Size() != list1.Size() {
+		return false
 	}
-	if p == nil && value == nil {
+	it := list.Iterator()
+	it1 := list1.Iterator()
+	for it.HasNext() && it1.HasNext() {
+		elem, _ := it.Next()
+		elem1, _ := it1.Next()
+		if elem != elem1 {
+			break
+		}
+	}
+	if it.HasNext() == false && it1.HasNext() == false {
 		return true
 	}
 	return false
@@ -169,10 +173,9 @@ func (list *DoubleList) Print() {
 
 // 创建一个空的双链表
 func NewDoubleList() (list *DoubleList) {
-	p := &DoubleList{nil, nil, 0, nil}
+	p := &DoubleList{nil, nil, 0}
 	p.last = new(Node)
 	p.first = p.last
-	p.List = p
 	return p
 }
 
@@ -180,13 +183,13 @@ func NewDoubleList() (list *DoubleList) {
 func (list *DoubleList) Iterator() Iterator {
 	it := new(LinkedIterator)
 	it.list = list
-	it.cursor = list.first
-	it.end = list.first
+	it.cursor = list.first.next
+	it.end = list.first.next
 	return it
 }
 
 //判断是否存在下一个元素
-func (it *LinkedIterator) HashNext() bool {
+func (it *LinkedIterator) HasNext() bool {
 	//如果当前下标等于它的大小说明没有下一个元素了
 	return it.cursor != nil
 }
