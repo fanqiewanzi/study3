@@ -1,10 +1,18 @@
 package lru
 
+//双向链表结构
+//key指的是map中用来查找节点的值
+//value用来保存每个节点下的值
+//pre和next用来指向上一个或者下一个节点的指针
 type Node struct {
 	key, value int
 	pre, next  *Node
 }
 
+//LRUCache的数据结构
+//map用来筛选进入缓存，在缓存满了之后map中的数据个数比链表中的数据个数要多
+//capacity是用来表示缓存的容量大小
+//first和last分别是指向链表的头指针和尾指针
 type LRUCache struct {
 	m           map[int]*Node
 	capacity    int
