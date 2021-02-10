@@ -207,6 +207,68 @@ func (it *LinkedIterator) Next() (interface{}, error) {
 	return it.end.data, nil
 }
 
+//是否有上一个元素
+func (it *LinkedIterator) HasPrevious() bool {
+	return it.cursor.pre != nil
+}
+
+//返回上一个元素
+func (it *LinkedIterator) Previous() (interface{}, error) {
+	//首先获取当前下标的位置
+	i := it.cursor
+	if i.pre == nil {
+		return nil, errors.New("没有这样的索引")
+	}
+	//下标位置往后移
+	it.cursor = i.pre
+	it.end = i
+	return it.end.data, nil
+}
+
+//下一个下标
+func (it *LinkedIterator) NextIndex() (interface{}, error) {
+	i := it.cursor
+	if i == nil {
+		return nil, errors.New("没有这样的索引")
+	}
+	return it.cursor.next, nil
+}
+
+func (it *LinkedIterator) PreviousIndex() (interface{}, error) {
+	i := it.cursor
+	if i.pre == nil {
+		return nil, errors.New("没有这样的索引")
+	}
+	return it.cursor.pre, nil
+}
+
+func (it *LinkedIterator) Remove() error {
+	p := it.end
+	p.pre.next = p.next
+	p.next.pre = p.pre
+	it.list.size--
+	return errors.New("no error")
+}
+
+func (it *LinkedIterator) Set(elem interface{}) error {
+	it.end.data = elem
+	return nil
+}
+
+func (it *LinkedIterator) Add(elem interface{}) error {
+	if it.end.pre == nil {
+		return errors.New("列表为空")
+	}
+	p := it.end
+	node := new(Node)
+	node.pre = p.pre
+	node.next = p
+	p.pre.next = node
+	node.data = elem
+	p.pre = node
+	return nil
+}
+
 func Doubletest() {
 	list1 := NewDoubleList()
 	list2 := NewDoubleList()

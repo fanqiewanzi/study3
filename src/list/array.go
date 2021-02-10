@@ -97,7 +97,8 @@ func (array *Array) Insert(location int, obj interface{}) error {
 		array.data[i+1] = array.data[i]
 	}
 	array.data[location-1] = obj
-	return errors.New("no error")
+	array.size++
+	return nil
 }
 
 //向指定位置修改元素，要判断目标位置是否存在
@@ -106,7 +107,7 @@ func (array *Array) Set(location int, obj interface{}) error {
 		return errors.New("下标超出")
 	}
 	array.data[location-1] = obj
-	return errors.New("success")
+	return nil
 }
 
 //是否存在某元素，进入循环进行遍历存在返回true，否则返回false
@@ -177,13 +178,71 @@ func (it *ArrayIterator) HasNext() bool {
 func (it *ArrayIterator) Next() (interface{}, error) {
 	//首先获取当前下标的位置
 	i := it.cursor
-	if i >= it.array.size+1 {
+	if i >= it.array.Size() {
 		return nil, errors.New("没有这样的索引")
 	}
 	//下标位置往后移
 	it.cursor = it.cursor + 1
 	it.end = i
 	return it.array.data[it.end], nil
+}
+
+//是否有上一个元素
+func (it *ArrayIterator) HasPrevious() bool {
+	return it.cursor != -1
+}
+
+//返回上一个元素
+func (it *ArrayIterator) Previous() (interface{}, error) {
+	//首先获取当前下标的位置
+	i := it.cursor
+	if i < 0 {
+		return nil, errors.New("没有这样的索引")
+	}
+	//下标位置往后移
+	it.cursor = it.cursor - 1
+	it.end = i
+	return it.array.data[it.end], nil
+}
+
+//下一个下标
+func (it *ArrayIterator) NextIndex() (interface{}, error) {
+	i := it.cursor
+	if i >= it.array.size+1 {
+		return nil, errors.New("没有这样的索引")
+	}
+	return it.cursor + 1, nil
+}
+func (it *ArrayIterator) PreviousIndex() (interface{}, error) {
+	i := it.cursor
+	if i < 0 {
+		return nil, errors.New("没有这样的索引")
+	}
+	return it.cursor - 1, nil
+}
+
+func (it *ArrayIterator) Remove() error {
+
+	for i := it.end; i < it.array.size; i++ {
+		it.array.data[i] = it.array.data[i+1]
+	}
+	it.array.data[it.array.size] = nil
+	it.array.size--
+	it.cursor--
+	it.end--
+	return errors.New("no error")
+}
+func (it *ArrayIterator) Set(elem interface{}) error {
+	it.array.data[it.end] = elem
+	return nil
+}
+
+func (it *ArrayIterator) Add(elem interface{}) error {
+	if it.end < 0 {
+		return errors.New("列表为空")
+	}
+	it.array.Insert(it.end+1, elem)
+	return nil
 }
 
 //迭代器初始化
