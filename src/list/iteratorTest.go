@@ -25,10 +25,6 @@ func IteratorTest() {
 
 		fmt.Print(i)
 	}
-	//for it.HasPrevious(){
-	//	i,_:=it.Previous()
-	//	fmt.Print(i)
-	//}
 
 	list1 := NewDoubleList()
 	for i := 0; i < 2; i++ {
@@ -52,8 +48,4 @@ func IteratorTest() {
 		i, _ := it3.Next()
 		fmt.Print(i)
 	}
-	//for it1.HasPrevious(){
-	//	i,_:=it1.Previous()
-	//	fmt.Print(i)
-	//}
 }
