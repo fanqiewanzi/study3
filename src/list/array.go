@@ -136,6 +136,7 @@ func (array *Array) Get(location int) (interface{}, error) {
 }
 
 //判断是否相等
+//这里使用迭代器对里面元素进行一一比较
 func (array *Array) Equals(list List) bool {
 	if array.Size() != list.Size() {
 		return false

@@ -116,8 +116,8 @@ func (list *DoubleList) Get(location int) (interface{}, error) {
 }
 
 //判断是否相等
+//这里使用迭代器对里面元素进行一一比较
 func (list *DoubleList) Equals(list1 List) bool {
-	//对每个元素一一进行比较，如果循环完后两个指针都为空说明是相等的
 	if list.Size() != list1.Size() {
 		return false
 	}
@@ -198,9 +198,9 @@ func (it *LinkedIterator) HasNext() bool {
 func (it *LinkedIterator) Next() (interface{}, error) {
 	//首先获取当前下标的位置
 	i := it.cursor
-	//if i >= arrayIterator.array.size+1 {
-	//	return nil, errors.New("没有这样的索引")
-	//}
+	if i == nil {
+		return nil, errors.New("没有这样的索引")
+	}
 	//下标位置往后移
 	it.cursor = it.cursor.next
 	it.end = i

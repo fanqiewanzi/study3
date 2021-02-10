@@ -6,4 +6,5 @@ type Iterator interface {
 	Next() (interface{}, error)
 	//HasPrevious() bool
 	//Previous() (interface{}, error)
+
 }
