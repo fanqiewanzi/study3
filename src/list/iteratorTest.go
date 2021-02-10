@@ -10,14 +10,14 @@ func IteratorTest() {
 	}
 	//fmt.Println(list)
 	//list.Set(0, 100)
-	it := list.ArrayIterator()
+	it := list.Iterator()
 
 	for it.HashNext() {
 		i, _ := it.Next()
 		fmt.Print(i)
 	}
 
-	list1 := NewLinkList()
+	list1 := NewDoubleList()
 
 	for i := 0; i < 10; i++ {
 		list1.Add(1)
@@ -25,11 +25,14 @@ func IteratorTest() {
 	}
 	//fmt.Println(list)
 	//list.Set(0, 100)
-	it1 := list1.LinkIterator()
+	it1 := list1.Iterator()
 
 	for it1.HashNext() {
 		i, _ := it1.Next()
 		fmt.Print(i)
 	}
-
+	for it1.HashNext() {
+		i, _ := it1.Next()
+		fmt.Print(i)
+	}
 }

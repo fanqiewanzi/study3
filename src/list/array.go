@@ -20,6 +20,16 @@ type Array struct {
 	List
 }
 
+//ArrayList迭代器
+//array为原数组
+//cursor为一个移动的下标
+//end为最近已经输出元素的下标
+type ArrayIterator struct {
+	array  *Array
+	cursor int
+	end    int
+}
+
 //创建一个新的动态数组
 func NewArray(capacity int) *Array {
 	data := make([]interface{}, capacity)
@@ -162,4 +172,32 @@ func (array Array) ToSlice() []interface{} {
 //输出当前list的长度
 func (array Array) Size() int {
 	return array.size + 1
+}
+
+//判断是否存在下一个元素
+func (it *ArrayIterator) HashNext() bool {
+	//如果当前下标等于它的大小说明没有下一个元素了
+	return it.cursor != it.array.size+1
+}
+
+//返回下一个元素
+func (it *ArrayIterator) Next() (interface{}, error) {
+	//首先获取当前下标的位置
+	i := it.cursor
+	if i >= it.array.size+1 {
+		return nil, errors.New("没有这样的索引")
+	}
+	//下标位置往后移
+	it.cursor = it.cursor + 1
+	it.end = i
+	return it.array.data[it.end], nil
+}
+
+//迭代器初始化
+func (array *Array) Iterator() Iterator {
+	it := new(ArraylistIterator)
+	it.array = array
+	it.cursor = 0
+	it.end = -1
+	return it
 }

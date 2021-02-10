@@ -18,6 +18,13 @@ type DoubleList struct {
 	List
 }
 
+//迭代器结构
+type LinkedIterator struct {
+	list   *DoubleList
+	cursor *Node
+	end    *Node
+}
+
 // 给链表末尾新增一个节点
 func (list *DoubleList) Add(obj ...interface{}) error {
 	for _, elem := range obj {
@@ -167,6 +174,34 @@ func NewDoubleList() (list *DoubleList) {
 	p.first = p.last
 	p.List = p
 	return p
+}
+
+//迭代器
+func (list *DoubleList) Iterator() Iterator {
+	it := new(LinkedIterator)
+	it.list = list
+	it.cursor = list.first
+	it.end = list.first
+	return it
+}
+
+//判断是否存在下一个元素
+func (it *LinkedIterator) HashNext() bool {
+	//如果当前下标等于它的大小说明没有下一个元素了
+	return it.cursor != nil
+}
+
+//返回下一个元素
+func (it *LinkedIterator) Next() (interface{}, error) {
+	//首先获取当前下标的位置
+	i := it.cursor
+	//if i >= arrayIterator.array.size+1 {
+	//	return nil, errors.New("没有这样的索引")
+	//}
+	//下标位置往后移
+	it.cursor = it.cursor.next
+	it.end = i
+	return it.end.data, nil
 }
 
 func Doubletest() {
