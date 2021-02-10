@@ -268,24 +268,3 @@ func (it *LinkedIterator) Add(elem interface{}) error {
 	p.pre = node
 	return nil
 }
-
-func Doubletest() {
-	list1 := NewDoubleList()
-	list2 := NewDoubleList()
-	list3 := NewDoubleList()
-	list3.Add(1, 2, 3, 4)
-	list1.Add(1, 2, 3, 4)
-	list2.Add(1, 2, 3, 4)
-	list1.Print()
-	fmt.Println(list1.Equals(list2))
-	list1.Insert(2, 5)
-	list1.Print()
-	fmt.Println(list1.Contain(5))
-	list1.Set(3, 1)
-	list1.Print()
-	fmt.Println(list1.IsEmpty())
-	fmt.Println(list1.Get(4))
-	fmt.Println(list1.Equals(list2))
-	fmt.Println(list1.ToSlice())
-	fmt.Println(list1.Size())
-}
