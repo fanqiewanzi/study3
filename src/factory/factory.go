@@ -8,8 +8,8 @@ import (
 type Factory interface {
 	ListFactory(string) list.List
 }
+
 type ListFactory struct {
-	Factory
 }
 
 func (listfactory *ListFactory) GetListType(str string) list.List {

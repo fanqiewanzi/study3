@@ -75,7 +75,7 @@ func (list *DoubleList) Set(location int, obj interface{}) error {
 	}
 	//赋值
 	p.data = obj
-	return errors.New("no error")
+	return nil
 }
 
 //是否存在某元素
@@ -179,7 +179,8 @@ func NewDoubleList() (list *DoubleList) {
 	return p
 }
 
-//迭代器
+//迭代器方法
+//迭代器初始化
 func (list *DoubleList) Iterator() Iterator {
 	it := new(LinkedIterator)
 	it.list = list
@@ -234,6 +235,7 @@ func (it *LinkedIterator) NextIndex() (interface{}, error) {
 	return it.cursor.next, nil
 }
 
+//上一个下标
 func (it *LinkedIterator) PreviousIndex() (interface{}, error) {
 	i := it.cursor
 	if i.pre == nil {
@@ -242,19 +244,22 @@ func (it *LinkedIterator) PreviousIndex() (interface{}, error) {
 	return it.cursor.pre, nil
 }
 
+//移除上一个已经输出的元素
 func (it *LinkedIterator) Remove() error {
 	p := it.end
 	p.pre.next = p.next
 	p.next.pre = p.pre
 	it.list.size--
-	return errors.New("no error")
+	return nil
 }
 
+//在当前节点的前一个已经输出的节点赋值
 func (it *LinkedIterator) Set(elem interface{}) error {
 	it.end.data = elem
 	return nil
 }
 
+//在当前节点的前一个已经输出的节点添加元素
 func (it *LinkedIterator) Add(elem interface{}) error {
 	if it.end.pre == nil {
 		return errors.New("列表为空")

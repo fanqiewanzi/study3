@@ -84,7 +84,7 @@ func (array *Array) Add(obj ...interface{}) error {
 		array.size++
 		array.data[array.size] = elem
 	}
-	return errors.New("no error")
+	return nil
 }
 
 //向指定位置加入元素,要判断容量是否足够且目标位置存在再进行添加
@@ -155,7 +155,6 @@ func (array *Array) Equals(list List) bool {
 		return true
 	}
 	return false
-
 }
 
 //转换为Slice类型，data就是slice所以直接赋值过去
@@ -168,10 +167,11 @@ func (array Array) Size() int {
 	return array.size + 1
 }
 
+//迭代器方法
 //判断是否存在下一个元素
 func (it *ArrayIterator) HasNext() bool {
 	//如果当前下标等于它的大小说明没有下一个元素了
-	return it.cursor != it.array.size+1
+	return it.cursor != it.array.Size()
 }
 
 //返回下一个元素
@@ -213,6 +213,8 @@ func (it *ArrayIterator) NextIndex() (interface{}, error) {
 	}
 	return it.cursor + 1, nil
 }
+
+//返回上一个下标
 func (it *ArrayIterator) PreviousIndex() (interface{}, error) {
 	i := it.cursor
 	if i < 0 {
@@ -221,6 +223,7 @@ func (it *ArrayIterator) PreviousIndex() (interface{}, error) {
 	return it.cursor - 1, nil
 }
 
+//移除元素
 func (it *ArrayIterator) Remove() error {
 
 	for i := it.end; i < it.array.size; i++ {
@@ -230,13 +233,16 @@ func (it *ArrayIterator) Remove() error {
 	it.array.size--
 	it.cursor--
 	it.end--
-	return errors.New("no error")
+	return nil
 }
+
+//在当前节点的前一个已经输出的节点赋值
 func (it *ArrayIterator) Set(elem interface{}) error {
 	it.array.data[it.end] = elem
 	return nil
 }
 
+//在当前节点的前一个已经输出的节点添加元素
 func (it *ArrayIterator) Add(elem interface{}) error {
 	if it.end < 0 {
 		return errors.New("列表为空")
