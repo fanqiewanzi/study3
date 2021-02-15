@@ -11,18 +11,16 @@ var mutex sync.Mutex
 
 //第一个goroutine
 func print1(ch chan int) {
-	mutex.Lock()
 	fmt.Print("goroutine1\t")
 	fmt.Println(<-ch)
-	mutex.Unlock()
 }
 
 //第二个goroutine
 func print2(ch chan int) {
-	mutex.Lock()
+
 	fmt.Print("goroutine2\t")
 	fmt.Println(<-ch)
-	mutex.Unlock()
+
 }
 func PrintTest() {
 	//创建一个能容纳100个int类型的管道
